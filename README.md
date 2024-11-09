@@ -14,12 +14,14 @@ Just clicked on Fix button.
 
 I setup my public IP address.
 
-```az aks update --resource-group rg-robot-eight-sbx-euw-01 --name aks-robot-eight-sbx-euw-01 --api-server-authorized-ip-ranges xxx.xxx.xxx.236/32
+```
+az aks update --resource-group rg-robot-eight-sbx-euw-01 --name aks-robot-eight-sbx-euw-01 --api-server-authorized-ip-ranges xxx.xxx.xxx.236/32
 ```
 
 ### Azure Kubernetes Service clusters should have the Azure Policy add-on for Kubernetes installed
 
-```az provider register --namespace Microsoft.PolicyInsights
+```
+az provider register --namespace Microsoft.PolicyInsights
 ```
 
 ### Key vaults should have purge protection enabled

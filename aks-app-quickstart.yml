@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-app
+  annotations:
+    azure.workload.identity/client-id: 8274c125-e93d-4e78-a485-67946b43adfd
+spec:
+  replicas: 2  # Define the number of replicas (pods)
+  selector:
+    matchLabels:
+      app: fastapi-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+        azure.workload.identity/use: "true"
+    spec:
+      containers:
+        - name: fastapi-container
+          image: roboteightsbxeuw01.azurecr.io/aks-demo/app-service:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: KEY_VAULT_URL
+              value: "https://keyroboteight.vault.azure.net/"
+            - name: AZURE_CLIENT_ID
+              value: "8274c125-e93d-4e78-a485-67946b43adfd"
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+      imagePullSecrets:
+        - name: acr-auth  # Ensure your image pull secret is configured for ACR access
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+spec:
+  type: LoadBalancer  # Creates an external LoadBalancer for public access
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: fastapi-app
+

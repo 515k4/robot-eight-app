@@ -32,8 +32,9 @@ spec:
             requests:
               cpu: "250m"
               memory: "128Mi"
-      imagePullSecrets:
-        - name: acr-auth  # Ensure your image pull secret is configured for ACR access
+      securityContext:
+        runAsNonRoot: true
+      #   runAsUser: 10001
 
 ---
 apiVersion: v1
